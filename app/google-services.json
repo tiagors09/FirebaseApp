@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "442395648199",
+    "firebase_url": "https://projeto-teste-abcea-default-rtdb.firebaseio.com",
+    "project_id": "projeto-teste-abcea",
+    "storage_bucket": "projeto-teste-abcea.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:442395648199:android:489497443d1e1d0fd7dee2",
+        "android_client_info": {
+          "package_name": "br.com.tiagors09.firebaseapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyATPxK-qwSKS8k-dZYlMCJ2bODr_qdzfB0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
