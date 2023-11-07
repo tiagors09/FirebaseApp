@@ -3,6 +3,8 @@ package br.com.tiagors09.firebaseapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,6 +13,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
@@ -21,7 +25,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
@@ -42,9 +50,61 @@ public class MainActivity extends AppCompatActivity {
         buttonUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Salvar em memória principal
+                imageView.setDrawingCacheEnabled(true);
+                imageView.buildDrawingCache();
 
-            }
-        });
+                // Recuperar bitmap da imagem
+                Bitmap bitmap = imageView.getDrawingCache();
+
+                // Converter bitmap para um formato de imagem
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                bitmap.compress(
+                        Bitmap.CompressFormat.PNG,
+                        75,
+                        baos
+                );
+
+                // Converter para array de bytes
+                byte[] dadosImagem = baos.toByteArray();
+
+                // Define nós para o storage
+                StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+                StorageReference imagens = storageReference.child("imagens");
+//                StorageReference imagemRef = imagens.child(String.format("%s.png", UUID.randomUUID()));
+
+                StorageReference imagemRef = imagens.child("paisagem.png");
+
+                imagemRef.delete();
+}
+                // Retorna objeto que irá controlar o upload
+//                UploadTask uploadTask = imagemRef.putBytes(dadosImagem);
+//
+//                uploadTask.addOnFailureListener(
+//                        MainActivity.this,
+//                        new OnFailureListener() {
+//                            @Override
+//                            public void onFailure(@NonNull Exception e) {
+//                                Toast.makeText(MainActivity.this, String.format("Falhou %s", e.getMessage()), Toast.LENGTH_SHORT).show();
+//                            }
+//                        }
+//                ).addOnSuccessListener(
+//                        MainActivity.this,
+//                        new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//                            @Override
+//                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                                imagemRef.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+//                                    @Override
+//                                    public void onComplete(@NonNull Task<Uri> task) {
+//                                        Uri url = task.getResult();
+//                                    }
+//                                });
+//                                Toast.makeText(MainActivity.this, "Deu bom", Toast.LENGTH_SHORT).show();
+//                            }
+//                        }
+//                );
+//            }
+//        });
 
 //
 //        email = findViewById(R.id.email);
@@ -93,7 +153,6 @@ public class MainActivity extends AppCompatActivity {
 //
 //            }
 //        });
-
 
 
 //                firebaseAuth
@@ -145,9 +204,7 @@ public class MainActivity extends AppCompatActivity {
 //            public void onCancelled(@NonNull DatabaseError error) {
 //
 //            }
-//        });
-
-
+        });
     }
 
     public void addUser(View v) {
